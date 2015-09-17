@@ -5,7 +5,9 @@
  */
 package com.ab.scanner.DAO;
 
+import com.ab.scanner.entity.Product;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 /**
@@ -29,6 +31,8 @@ public class DBaccess {
             Connection con=DBUtils.getConnection();
             stmt=con.createStatement();
             result=stmt.execute(DBCOnstants.CREATE_DB_SCHEMA);
+            stmt.execute(DBCOnstants.USE_DB);
+            stmt.execute(DBCOnstants.CREATE_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -39,6 +43,25 @@ public class DBaccess {
         }
         
         return true;
+    }
+    
+    public boolean insertProduct(Product p) throws Exception
+    {
+        boolean result=false;
+        PreparedStatement stmt=null;
+        try {
+                Connection con=DBUtils.getConnection();
+                stmt=con.prepareStatement(DBCOnstants.INSERT_TABLE);
+                stmt.setString(1, p.getTkNo());
+                stmt.setString(2, p.getDescription());
+                stmt.setString(3, p.getOrignalSize());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            stmt.close();
+        }
+        return result;
+        
     }
     
     

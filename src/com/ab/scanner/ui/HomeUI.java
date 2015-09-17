@@ -5,6 +5,9 @@
  */
 package com.ab.scanner.ui;
 
+import com.ab.scanner.utils.Constants;
+import com.ab.scanner.utils.ObjectFactory;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -233,6 +236,16 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void btnCreateDBScemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateDBScemaActionPerformed
         // TODO add your handling code here:
+        try {
+            boolean bool=ObjectFactory.getUIinstance().getDbObject().createDBschema();
+            if(bool)
+            {
+                JOptionPane.showMessageDialog(this, Constants.DBSCEHMA_MESSAGE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }//GEN-LAST:event_btnCreateDBScemaActionPerformed
 
     /**
