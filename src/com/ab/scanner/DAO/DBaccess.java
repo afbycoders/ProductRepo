@@ -147,5 +147,31 @@ public class DBaccess {
         return p;
     }
     
+    public boolean updateRecord(Product p)
+    {
+        boolean result=false;
+        PreparedStatement stmt=null;
+        try {
+                stmt=DBUtils.getConnectionDatabase().prepareStatement(DBCOnstants.UPDATE_A_RECORD);
+                stmt.setString(1, p.getTkNo());
+                stmt.setString(2, p.getDescription());
+                stmt.setString(3, p.getOrignalSize());
+                stmt.setString(4, p.getLefetSize());
+                stmt.setString(5, p.getColor());
+                stmt.setString(6, p.getSupplier());
+                stmt.setString(7, p.getIssueNo());
+                stmt.setString(8, p.getIssueDate());
+                stmt.setString(9, p.getDdatCreated());
+                stmt.setString(10, p.getBarcode());
+                stmt.setInt(11, p.getpId());
+                
+                int i=stmt.executeUpdate();
+                System.out.println(i+" is updated");
+                result=true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     
 }

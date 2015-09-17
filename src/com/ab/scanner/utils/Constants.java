@@ -10,6 +10,7 @@ package com.ab.scanner.utils;
  * @author KochiKaMama
  */
 public interface Constants {
+    String DATA_UPDATED="Data has been updated successfully.";
     String DATA_ADDED="Data has been added successfully.";
     String NO_SELECTION="Please select a value to update.";
     

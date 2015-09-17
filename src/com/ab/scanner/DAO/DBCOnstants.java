@@ -47,5 +47,10 @@ public interface DBCOnstants {
     String FETCH_PRODUCT_LIST="select pId ,tkNo ,orignalSize ,leftSize ,color from products order by dateCreated desc";
     
     String GET_A_PRODUCT="select * from products where pId=?";
+    
+    String UPDATE_A_RECORD = "update products set tkNo=?,"
+            + "description=? , orignalSize=? ,leftSize=? ,color=?,supplier=? ,issueNo=? ,"
+            + "issueDate=? ,dateCreated=?  ,barcode=? "
+            + " where pid=?";
 
 }

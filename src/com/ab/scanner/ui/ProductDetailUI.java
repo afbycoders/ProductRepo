@@ -302,6 +302,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
 
     private void onClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onClose
         // TODO add your handling code here:
+         ObjectFactory.getUIinstance().getHomeInstance().loadDataTable();
         ObjectFactory.getUIinstance().getHomeInstance().setVisible(true);
     }//GEN-LAST:event_onClose
 
@@ -309,23 +310,39 @@ public class ProductDetailUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         try {
+            if (mode.equals(ProductFrameModes.CREATE)) {
+                Product p = new Product();
+                p.setTkNo(tfTkNo.getText());
+                p.setColor(tfColor.getText());
+                p.setOrignalSize(tfSize.getText());
+                p.setDescription(taDescription.getText());
+                p.setIssueDate(tfIssueDate.getText());
+                p.setIssueNo(tfIssueNo.getText());
+                p.setLefetSize(tfRemainSize.getText());
+                p.setSupplier(tfSupplier.getText());
 
-            Product p = new Product();
-            p.setTkNo(tfTkNo.getText());
-            p.setColor(tfColor.getText());
-            p.setOrignalSize(tfSize.getText());
-            p.setDescription(taDescription.getText());
-            p.setIssueDate(tfIssueDate.getText());
-            p.setIssueNo(tfIssueNo.getText());
-            p.setLefetSize(tfRemainSize.getText());
-            p.setSupplier(tfSupplier.getText());
+                Integer id = ObjectFactory.getUIinstance().getDbObject().insertProduct(p);
+                generatedProductId = id.toString();
+                System.out.println(generatedProductId);
 
-            Integer id=ObjectFactory.getUIinstance().getDbObject().insertProduct(p);
-            generatedProductId=id.toString();
-            System.out.println(generatedProductId);
-            
-            JOptionPane.showMessageDialog(this, Constants.DATA_ADDED);
-
+                JOptionPane.showMessageDialog(this, Constants.DATA_ADDED);
+            }else{
+                Product p = new Product();
+                p.setTkNo(tfTkNo.getText());
+                p.setColor(tfColor.getText());
+                p.setOrignalSize(tfSize.getText());
+                p.setDescription(taDescription.getText());
+                p.setIssueDate(tfIssueDate.getText());
+                p.setIssueNo(tfIssueNo.getText());
+                p.setLefetSize(tfRemainSize.getText());
+                p.setSupplier(tfSupplier.getText());
+                p.setLefetSize(tfRemainSize.getText());
+                p.setpId(selectedProduct.getpId());
+                p.setDdatCreated(selectedProduct.getDdatCreated());
+                
+                ObjectFactory.getUIinstance().getDbObject().updateRecord(p);
+                JOptionPane.showMessageDialog(this, Constants.DATA_UPDATED);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -399,7 +416,8 @@ public class ProductDetailUI extends javax.swing.JFrame {
     private javax.swing.JTextField tfTkNo;
     // End of variables declaration//GEN-END:variables
     private String generatedProductId;
-
+    private ProductFrameModes mode;
+    private Product selectedProduct;
     
     public void initializeUI(ProductFrameModes mode,Integer Pid)
     {
@@ -416,6 +434,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
 
     private void loadEditMode(Integer Pid) {
         try {
+            mode=ProductFrameModes.EDIT;
             Product p=ObjectFactory.getUIinstance().getDbObject().getProduct(Pid);
             tfBarCode.setText(p.getBarcode());
             tfColor.setText(p.getColor());
@@ -427,6 +446,8 @@ public class ProductDetailUI extends javax.swing.JFrame {
             tfTkNo.setText(p.getTkNo());
             taDescription.setText(p.getDescription());
             
+            selectedProduct=p;
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -434,6 +455,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
 
     private void loadCreateMode() {
         try {
+            mode=ProductFrameModes.CREATE;
             tfBarCode.setText("");
             tfColor.setText("");
             tfIssueDate.setText("");
