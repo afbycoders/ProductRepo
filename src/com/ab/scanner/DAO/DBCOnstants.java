@@ -21,7 +21,9 @@ public interface DBCOnstants {
 
     // -- Querys----
     String CREATE_DB_SCHEMA = "create database " + DB_NAME;
+    
     String USE_DB = "use " + DB_NAME;
+    
     String CREATE_TABLE = "create table products("
             + "pId mediumint NOT NULL AUTO_INCREMENT,"
             + "tkNo varchar(20),"
@@ -32,13 +34,18 @@ public interface DBCOnstants {
             + "supplier varchar(10),"
             + "issueNo varchar(10),"
             + "issueDate date,"
-            + "dateCreated date,"
+            + "dateCreated TIMESTAMP not null DEFAULT NOW(),"
             + "barcode varchar(100),"
             + "primary key (pId)"
             + ")";
-    String INSERT_TABLE = "insert into products(tkNo,"
+    
+    String INSERT_RECORD_QUERY = "insert into products(tkNo,"
             + "description ,orignalSize , leftSize,color,supplier ,issueNo ,"
             + "issueDate ,dateCreated  ,barcode )"
-            + "values(?,?,?,?,?,?,?,?,?)";
+            + "values(?,?,?,?,?,?,?,?,?,?)";
+    
+    String FETCH_PRODUCT_LIST="select pId ,tkNo ,orignalSize ,leftSize ,color from products order by dateCreated desc";
+    
+    String GET_A_PRODUCT="select * from products where pId=?";
 
 }

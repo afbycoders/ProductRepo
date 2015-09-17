@@ -5,8 +5,11 @@
  */
 package com.ab.scanner.ui;
 
+import com.ab.scanner.entity.ProductTable;
+import com.ab.scanner.entity.ProductTableModel;
 import com.ab.scanner.utils.Constants;
 import com.ab.scanner.utils.ObjectFactory;
+import com.ab.scanner.utils.ProductFrameModes;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -35,6 +38,7 @@ public class HomeUI extends javax.swing.JFrame {
         
         initComponents();
         setLocationRelativeTo(null);
+        loadDataTable();
     }
 
     /**
@@ -49,7 +53,7 @@ public class HomeUI extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableProduct = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -63,28 +67,37 @@ public class HomeUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableProduct.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Tk No", "Total Quantity ", "Left ", "Color"
+                "Product Id", "Tk No", "Total Quantity ", "Left ", "Color"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableProduct);
 
         jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Add");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +113,7 @@ public class HomeUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2)
@@ -175,7 +188,7 @@ public class HomeUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(pnlOverviewDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 142, Short.MAX_VALUE))
+                        .addGap(0, 317, Short.MAX_VALUE))
                     .addComponent(btnCreateDBScema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -225,13 +238,16 @@ public class HomeUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jTabbedPane1.getAccessibleContext().setAccessibleName("Product List");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        new ProductDetailUI().setVisible(true);
+        ObjectFactory.getUIinstance().getProductUI().initializeUI(ProductFrameModes.CREATE, 0);
+        ObjectFactory.getUIinstance().getProductUI().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnCreateDBScemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateDBScemaActionPerformed
@@ -247,6 +263,24 @@ public class HomeUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_btnCreateDBScemaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        Integer selectedRow= tableProduct.getSelectedRow();
+        if(selectedRow==-1)
+        {
+            JOptionPane.showMessageDialog(this, Constants.NO_SELECTION);
+            return;
+        }
+        String selectedProduct=ptm.getListProduct().get(selectedRow).getProductId();
+        setVisible(false);
+        ObjectFactory.getUIinstance().getProductUI().initializeUI(ProductFrameModes.EDIT, Integer.parseInt(selectedProduct));
+        ObjectFactory.getUIinstance().getProductUI().setVisible(true);
+        
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -305,7 +339,23 @@ public class HomeUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel pnlOverviewDB;
+    private javax.swing.JTable tableProduct;
     // End of variables declaration//GEN-END:variables
+    private ProductTableModel ptm;
+    
+    public void loadDataTable() {
+        try {
+            
+            java.util.List<ProductTable> pt= ObjectFactory.getUIinstance().getDbObject().getProductList();
+            
+            ptm=new ProductTableModel();
+            ptm.setListProduct(pt);
+            
+            tableProduct.setModel(ptm);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -9,9 +9,8 @@ package com.ab.scanner.utils;
  *
  * @author KochiKaMama
  */
-public interface Constants {
-    String DATA_ADDED="Data has been added successfully.";
-    String NO_SELECTION="Please select a value to update.";
+public enum ProductFrameModes {
+   
+    CREATE , EDIT
     
-    String DBSCEHMA_MESSAGE="Database and tables are created successfully.";
 }

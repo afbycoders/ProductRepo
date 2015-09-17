@@ -7,6 +7,8 @@ package com.ab.scanner.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 /**
  *
@@ -15,7 +17,7 @@ import java.sql.DriverManager;
 public class DBUtils {
     
     static Connection connection;
-    
+    static PreparedStatement pstmt;
     
     
     public static Connection getConnection()
@@ -32,5 +34,33 @@ public class DBUtils {
         }
         return connection;
     }
+    
+    public static Connection getConnectionDatabase()
+    {
+        try{
+        if(connection==null)
+        {
+            Class.forName(DBCOnstants.DRIVER);
+            connection=DriverManager.getConnection(DBCOnstants.DB_URL+DBCOnstants.DB_NAME,DBCOnstants.USER,DBCOnstants.PWD);
+        }
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return connection;
+    }
+    
+    public static PreparedStatement getPreparedStatmentQuery(String query) throws Exception
+    {
+        if(pstmt==null)
+        {
+            pstmt=getConnectionDatabase().prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+        }
+        return pstmt;
+    }
+    
+   
+    
+   
     
 }
