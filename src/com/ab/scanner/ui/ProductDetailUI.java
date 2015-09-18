@@ -302,8 +302,6 @@ public class ProductDetailUI extends javax.swing.JFrame {
 
     private void onClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onClose
         // TODO add your handling code here:
-         ObjectFactory.getUIinstance().getHomeInstance().loadDataTable();
-        ObjectFactory.getUIinstance().getHomeInstance().setVisible(true);
     }//GEN-LAST:event_onClose
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
