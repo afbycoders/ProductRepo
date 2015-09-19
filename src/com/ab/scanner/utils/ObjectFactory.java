@@ -8,6 +8,7 @@ package com.ab.scanner.utils;
 import com.ab.scanner.DAO.DBaccess;
 import com.ab.scanner.ui.HomeUI;
 import com.ab.scanner.ui.ProductDetailUI;
+import com.ab.scanner.ui.ProductsList;
 
 /**
  *
@@ -22,6 +23,8 @@ public class ObjectFactory {
     private ProductDetailUI productUI;
     
     private DBaccess dbObject;
+    
+    private ProductsList productList;
     
     private ObjectFactory()
     {
@@ -63,6 +66,16 @@ public class ObjectFactory {
             productUI=new ProductDetailUI();
         }
         return productUI;
+    }
+    
+    public ProductsList getProductListUI()
+    {
+        if(productList==null)
+        {
+            productList=new ProductsList();
+        }
+        
+        return productList;
     }
 
 }

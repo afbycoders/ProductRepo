@@ -71,7 +71,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel1.setText("Product Details");
 
@@ -101,6 +101,11 @@ public class ProductDetailUI extends javax.swing.JFrame {
         });
 
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Generate");
 
@@ -195,7 +200,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -302,6 +307,12 @@ public class ProductDetailUI extends javax.swing.JFrame {
 
     private void onClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onClose
         // TODO add your handling code here:
+        try {
+         this.setVisible(false);
+         ObjectFactory.getUIinstance().getHomeInstance().setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_onClose
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -346,6 +357,11 @@ public class ProductDetailUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        resetFields();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,6 +443,9 @@ public class ProductDetailUI extends javax.swing.JFrame {
             case EDIT:
                 loadEditMode(Pid);
                 break;
+            case VIEW:
+                loadViewMode(Pid);
+                break;
         }
     }
 
@@ -454,6 +473,58 @@ public class ProductDetailUI extends javax.swing.JFrame {
     private void loadCreateMode() {
         try {
             mode=ProductFrameModes.CREATE;
+            resetFields();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadViewMode(Integer Pid) {
+        try {
+            mode=ProductFrameModes.VIEW;
+            disableFields();
+            populateFields(Pid);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void populateFields(Integer Pid)
+    {
+        try {
+                        mode=ProductFrameModes.EDIT;
+            Product p=ObjectFactory.getUIinstance().getDbObject().getProduct(Pid);
+            tfBarCode.setText(p.getBarcode());
+            tfColor.setText(p.getColor());
+            tfIssueDate.setText(p.getIssueDate());
+            tfIssueNo.setText(p.getIssueNo());
+            tfRemainSize.setText(p.getLefetSize());
+            tfSize.setText(p.getOrignalSize());
+            tfSupplier.setText(p.getSupplier());
+            tfTkNo.setText(p.getTkNo());
+            taDescription.setText(p.getDescription());
+            
+            selectedProduct=p;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void disableFields() {
+            tfBarCode.setEditable(false);
+            tfColor.setEditable(false);
+            tfIssueDate.setEditable(false);
+            tfIssueNo.setEditable(false);
+            tfRemainSize.setEditable(false);
+            tfSize.setEditable(false);
+            tfSupplier.setEditable(false);
+            tfTkNo.setEditable(false);
+            taDescription.setEditable(false);
+    }
+
+    private void resetFields() {
+        try {
             tfBarCode.setText("");
             tfColor.setText("");
             tfIssueDate.setText("");
