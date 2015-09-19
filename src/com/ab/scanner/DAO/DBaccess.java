@@ -59,7 +59,8 @@ public class DBaccess {
         PreparedStatement stmt=null;
         try {
                
-                stmt=DBUtils.getPreparedStatmentQuery(DBCOnstants.INSERT_RECORD_QUERY);
+                //stmt=DBUtils.getPreparedStatmentQuery(DBCOnstants.INSERT_RECORD_QUERY);
+                stmt=DBUtils.getConnectionDatabase().prepareStatement(DBCOnstants.INSERT_RECORD_QUERY,Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, p.getTkNo());
                 stmt.setString(2, p.getDescription());
                 stmt.setString(3, p.getOrignalSize());
@@ -88,7 +89,7 @@ public class DBaccess {
         } catch (Exception e) {
             e.printStackTrace();
         }finally{
-            
+            stmt.close();
         }
         return 0;
         
@@ -147,11 +148,12 @@ public class DBaccess {
         return p;
     }
     
-    public boolean updateRecord(Product p)
+    public boolean updateRecord(Product p) throws Exception
     {
         boolean result=false;
         PreparedStatement stmt=null;
         try {
+                //stmt=DBUtils.getConnectionDatabase().prepareStatement(DBCOnstants.UPDATE_A_RECORD);
                 stmt=DBUtils.getConnectionDatabase().prepareStatement(DBCOnstants.UPDATE_A_RECORD);
                 stmt.setString(1, p.getTkNo());
                 stmt.setString(2, p.getDescription());
@@ -170,6 +172,8 @@ public class DBaccess {
                 result=true;
         } catch (Exception e) {
             e.printStackTrace();
+        }finally{
+            stmt.close();
         }
         return result;
     }
