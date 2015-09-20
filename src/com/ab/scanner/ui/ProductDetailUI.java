@@ -73,7 +73,9 @@ public class ProductDetailUI extends javax.swing.JFrame {
         });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        jPanel1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
 
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel1.setText("Product Details");
 
         jLabel2.setText("Tk No.");
@@ -122,7 +124,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel9.setText("Bar Code ");
+        jLabel9.setText("Product Id");
 
         tfBarCode.setEditable(false);
         tfBarCode.setEnabled(false);
