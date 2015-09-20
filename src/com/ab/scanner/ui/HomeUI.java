@@ -129,6 +129,13 @@ public class HomeUI extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+        try {
+            //ObjectFactory.getUIinstance().getProductUI().initializeUI(ProductFrameModes.TRANSACTION, WIDTH);
+            setVisible(false);
+            new AddTransaction().setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

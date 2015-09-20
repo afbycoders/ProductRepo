@@ -9,6 +9,7 @@ import com.ab.scanner.entity.Product;
 import com.ab.scanner.utils.Constants;
 import com.ab.scanner.utils.ObjectFactory;
 import com.ab.scanner.utils.ProductFrameModes;
+import com.afby.barcode.BarcodeGenerator;
 import javax.swing.JOptionPane;
 
 /**
@@ -108,8 +109,18 @@ public class ProductDetailUI extends javax.swing.JFrame {
         });
 
         jButton3.setText("Generate");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Print");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Bar Code ");
 
@@ -329,7 +340,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
                 p.setIssueNo(tfIssueNo.getText());
                 p.setLefetSize(tfRemainSize.getText());
                 p.setSupplier(tfSupplier.getText());
-
+                
                 Integer id = ObjectFactory.getUIinstance().getDbObject().insertProduct(p);
                 generatedProductId = id.toString();
                 System.out.println(generatedProductId);
@@ -348,7 +359,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
                 p.setLefetSize(tfRemainSize.getText());
                 p.setpId(selectedProduct.getpId());
                 p.setDdatCreated(selectedProduct.getDdatCreated());
-                
+                p.setBarcode(tfBarCode.getText());
                 ObjectFactory.getUIinstance().getDbObject().updateRecord(p);
                 JOptionPane.showMessageDialog(this, Constants.DATA_UPDATED);
             }
@@ -362,6 +373,28 @@ public class ProductDetailUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         resetFields();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        try {
+            String barcode=Constants.BARCODE_PREFIX+generatedProductId;
+            ObjectFactory.getUIinstance().getDbObject().updateBarcode(Integer.parseInt(generatedProductId), barcode);
+            BarcodeGenerator bg=new BarcodeGenerator();
+            bg.generateBarcode(barcode);
+            tfBarCode.setText(barcode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        try {
+             Runtime.getRuntime().exec(new String[] {"cmd.exe", "/C","C:\\temp\\barcode.png"});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -464,7 +497,7 @@ public class ProductDetailUI extends javax.swing.JFrame {
             taDescription.setText(p.getDescription());
             
             selectedProduct=p;
-            
+            enableFields();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -521,6 +554,18 @@ public class ProductDetailUI extends javax.swing.JFrame {
             tfSupplier.setEditable(false);
             tfTkNo.setEditable(false);
             taDescription.setEditable(false);
+    }
+    
+        private void enableFields() {
+            tfBarCode.setEditable(false);
+            tfColor.setEditable(true);
+            tfIssueDate.setEditable(true);
+            tfIssueNo.setEditable(true);
+            tfRemainSize.setEditable(true);
+            tfSize.setEditable(true);
+            tfSupplier.setEditable(true);
+            tfTkNo.setEditable(true);
+            taDescription.setEditable(true);
     }
 
     private void resetFields() {

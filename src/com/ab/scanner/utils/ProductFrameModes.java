@@ -11,6 +11,6 @@ package com.ab.scanner.utils;
  */
 public enum ProductFrameModes {
    
-    CREATE , EDIT ,VIEW
+    CREATE , EDIT ,VIEW , TRANSACTION
     
 }

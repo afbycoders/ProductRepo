@@ -40,6 +40,7 @@ public class DBaccess {
             result=stmt.execute(DBCOnstants.CREATE_DB_SCHEMA);
             stmt.execute(DBCOnstants.USE_DB);
             stmt.execute(DBCOnstants.CREATE_TABLE);
+            stmt.execute(DBCOnstants.CREATE_TRANSACTION_DB);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -94,6 +95,8 @@ public class DBaccess {
         return 0;
         
     }
+    
+    
     
     public List<ProductTable> getProductList()
     {
@@ -178,4 +181,20 @@ public class DBaccess {
         return result;
     }
     
+    
+    public boolean updateBarcode(Integer pid,String barcode)
+    {
+        boolean bool=false;
+        PreparedStatement stmt=null;
+        try {
+            stmt=DBUtils.getConnectionDatabase().prepareStatement(DBCOnstants.UPDATE_BARCODE);
+            stmt.setString(1, barcode);
+            stmt.setInt(2, pid);
+            stmt.executeUpdate();
+            bool=true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bool;
+    }
 }

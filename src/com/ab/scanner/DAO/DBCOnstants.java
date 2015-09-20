@@ -39,10 +39,18 @@ public interface DBCOnstants {
             + "primary key (pId)"
             + ")";
     
+    String CREATE_TRANSACTION_DB = "create table transaction( tId mediumint NOT NULL AUTO_INCREMENT,"
+            + "pid mediumint ,"
+            + "dateCreated TIMESTAMP not null DEFAULT NOW() ,"
+            + "type varchar(10),"
+            + "primary key (tId ))";
+    
     String INSERT_RECORD_QUERY = "insert into products(tkNo,"
             + "description ,orignalSize , leftSize,color,supplier ,issueNo ,"
             + "issueDate ,dateCreated  ,barcode )"
             + "values(?,?,?,?,?,?,?,?,?,?)";
+    
+    String INSERT_TRANSACTION_QUERY="insert into transaction(pid,type) values(?,?)";
     
     String FETCH_PRODUCT_LIST="select pId ,tkNo ,orignalSize ,leftSize ,color from products order by dateCreated desc";
     
@@ -52,5 +60,7 @@ public interface DBCOnstants {
             + "description=? , orignalSize=? ,leftSize=? ,color=?,supplier=? ,issueNo=? ,"
             + "issueDate=? ,dateCreated=?  ,barcode=? "
             + " where pid=?";
+    
+    String UPDATE_BARCODE="update products set barcode=? where pid=?";
 
 }
